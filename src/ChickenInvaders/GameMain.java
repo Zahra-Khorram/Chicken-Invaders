@@ -24,10 +24,10 @@ public class GameMain extends JFrame {
         mainPanel.add(new LoginPanel(this), "LoginPanel");
         mainPanel.add(new RegisterPanel(this), "RegisterPanel");
 
-        // پنل‌های خالی موقت برای جلوگیری از خطای کامپایل
-        mainPanel.add(new JPanel(), "SettingsPanel");
-        mainPanel.add(new JPanel(), "HowToPlayPanel");
-        mainPanel.add(new JPanel(), "HighScorePanel");
+
+        mainPanel.add(new SettingPanel(this), "SettingsPanel");
+        mainPanel.add(new HowToPlayPanel(this), "HowToPlayPanel");
+        mainPanel.add(new HighScorePanel(this), "HighScorePanel");
         mainPanel.add(new JPanel(), "StorePanel");
 
         add(mainPanel);
@@ -35,6 +35,14 @@ public class GameMain extends JFrame {
     }
 
     public void showPanel(String name) {
+        for (Component comp : mainPanel.getComponents()) {
+            if (comp instanceof SettingPanel && name.equals("SettingsPanel")) {
+                ((SettingPanel) comp).refreshData();
+            }
+            if (comp instanceof HighScorePanel && name.equals("HighScorePanel")) {
+                ((HighScorePanel) comp).refreshData();
+            }
+        }
         cardLayout.show(mainPanel, name);
     }
 
