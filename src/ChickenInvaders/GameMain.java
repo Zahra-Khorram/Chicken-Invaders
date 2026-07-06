@@ -1,5 +1,4 @@
 package ChickenInvaders;
-
 import javax.swing.*;
         import java.awt.*;
 
@@ -19,6 +18,7 @@ public class GameMain extends JFrame {
         mainPanel = new JPanel(cardLayout);
 
         DatabaseManager.initDatabase();
+        ImageLoader.loadAllImages();
 
         mainPanel.add(new MainMenu(this), "MainMenu");
         mainPanel.add(new LoginPanel(this), "LoginPanel");
@@ -46,11 +46,27 @@ public class GameMain extends JFrame {
         cardLayout.show(mainPanel, name);
     }
 
+    //update
     public void startGame() {
         if (currentUser == null) {
             showPanel("LoginPanel");
         } else {
-            JOptionPane.showMessageDialog(this, "Game Started for " + currentUser.getUsername());
+
+            GamePanel gamePanel = null;
+            for (java.awt.Component comp : mainPanel.getComponents()) {
+                if (comp instanceof GamePanel) {
+                    gamePanel = (GamePanel) comp;
+                    break;
+                }
+            }
+
+            if (gamePanel == null) {
+                gamePanel = new GamePanel(this);
+                mainPanel.add(gamePanel, "GamePanel");
+            }
+
+            showPanel("GamePanel");
+            gamePanel.startGameLoop();
         }
     }
 

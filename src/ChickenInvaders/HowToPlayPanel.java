@@ -81,4 +81,4 @@ public class HowToPlayPanel extends JPanel {
 
         backBtn.addActionListener(e -> main.showPanel("MainMenu"));
     }
-}
+}//update
