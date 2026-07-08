@@ -46,7 +46,6 @@ public class GameMain extends JFrame {
         cardLayout.show(mainPanel, name);
     }
 
-    //update
     public void startGame() {
         if (currentUser == null) {
             showPanel("LoginPanel");

@@ -1,8 +1,8 @@
 package ChickenInvaders;
 
 import javax.swing.*;
-        import java.awt.*;
-        import java.awt.event.ActionEvent;
+import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -21,7 +21,7 @@ public class GamePanel extends JPanel implements ActionListener {
     private ArrayList<PowerUp> powerUps = new ArrayList<>();
     private ArrayList<Explosion> explosions = new ArrayList<>();
     private long lastEggTime = System.currentTimeMillis();
-
+    private long freezeEndTime = 0;
     private int enemyDirection = 1;
     private int enemySpeed = 2;
     private int enemyStepDown = 20;
@@ -79,6 +79,8 @@ public class GamePanel extends JPanel implements ActionListener {
     public void startGameLoop() {
         score = 0;
         levelManager.reset();
+
+
         isPaused = false;
         plane = new Plane(370, 500);
 
@@ -103,16 +105,29 @@ public class GamePanel extends JPanel implements ActionListener {
 
         if (shootPressed) {
             bullets.addAll(plane.shoot());
+            SoundManager.shootSound();
         }
 
-        for (Enemy enemy : enemies) {
+        boolean frozen = System.currentTimeMillis() < freezeEndTime;
 
-            enemy.update();
+        if (!frozen) {
+
+            for (Enemy enemy : enemies) {
+                enemy.update();
+            }
 
         }
-        moveEnemyGrid();
 
-        if (System.currentTimeMillis() - lastEggTime > 2000) {
+        if (!frozen && !enemies.isEmpty() && enemies.get(0) instanceof BossEnemy boss) {
+
+            eggs.addAll(boss.shoot());
+        }
+
+        if (!levelManager.isBossLevel() && !frozen) {
+            moveEnemyGrid();
+        }
+
+        if (!frozen && System.currentTimeMillis() - lastEggTime > 2000) {
 
             if (!enemies.isEmpty()) {
 
@@ -162,7 +177,7 @@ public class GamePanel extends JPanel implements ActionListener {
                             case FAST -> score += 15;
                             case ZIGZAG -> score += 20;
                             case SHOOTER -> score += 25;
-
+                            case BOSS -> score += 500;
                         }
                         explosions.add(
                                 new Explosion(
@@ -193,28 +208,31 @@ public class GamePanel extends JPanel implements ActionListener {
 
                             score += 200;
 
-                            levelManager.nextLevel();
-
-                            if (levelManager.getCurrentLevel() <= 8) {
-
-                                JOptionPane.showMessageDialog(
-                                        this,
-                                        "Level " + levelManager.getCurrentLevel()
-                                );
-
-                                loadLevel();
-
-                            } else {
-
-                                JOptionPane.showMessageDialog(
-                                        this,
-                                        "You Win!"
-                                );
+                            // اگر باس مرحله ۸ را شکست خورد
+                            if (levelManager.getCurrentLevel() == 8) {
+                                SoundManager.winSound();
+                                JOptionPane.showMessageDialog(this, "🎉 You Win!");
 
                                 gameTimer.stop();
 
+                                if (main.getCurrentUser() != null) {
+                                    DatabaseManager.saveGameRecord(
+                                            main.getCurrentUser().getUsername(),
+                                            score,
+                                            levelManager.getCurrentLevel()
+                                    );
+                                }
+
+                                main.showPanel("MainMenu");
+                                return;
                             }
 
+                            levelManager.nextLevel();
+
+                            JOptionPane.showMessageDialog(this, "Level " + levelManager.getCurrentLevel());
+
+                            loadLevel();
+                            return;
                         }
 
                     }
@@ -237,17 +255,20 @@ public class GamePanel extends JPanel implements ActionListener {
 
                 eggs.remove(i);
 
-                explosions.add(new Explosion(
-                                plane.getBounds().x + 30,
-                                plane.getBounds().y + 30));
+                if (!plane.hasShield()) {
 
-                plane.damage();
+                    explosions.add(new Explosion(
+                            plane.getBounds().x + 30,
+                            plane.getBounds().y + 30));
 
-                if (plane.getLives() <= 0) {
-                    gameOver();}
+                    plane.damage();
+
+                    if (plane.getLives() <= 0) {
+                        gameOver();
+                    }
+                }
             }
         }
-
         for (int i = powerUps.size() - 1; i >= 0; i--) {
 
             PowerUp p = powerUps.get(i);
@@ -272,28 +293,82 @@ public class GamePanel extends JPanel implements ActionListener {
                         break;
 
                     case FAST_SHOT:
-                        // بعداً پیاده‌سازی می‌کنیم
+                        plane.activateFastShot();
                         break;
 
                     case SHIELD:
-                        // بعداً پیاده‌سازی می‌کنیم
+                        plane.activateShield();
                         break;
 
                     case FREEZE:
-                        // بعداً پیاده‌سازی می‌کنیم
+                        freezeEndTime = System.currentTimeMillis() + 5000;
                         break;
 
                     case BOMB:
-                        // بعداً پیاده‌سازی می‌کنیم
-                        break;
+                        powerUps.remove(i);
+                        eggs.clear();
+                        for (int k = enemies.size() - 1; k >= 0; k--) {
+
+                            Enemy enemy = enemies.get(k);
+
+                            explosions.add(
+                                    new Explosion(
+                                            enemy.getX() + 25,
+                                            enemy.getY() + 25
+                                    )
+                            );
+                            SoundManager.explosionSound();
+                            switch (enemy.getType()) {
+
+                                case NORMAL -> score += 10;
+                                case FAST -> score += 15;
+                                case ZIGZAG -> score += 20;
+                                case SHOOTER -> score += 25;
+                                case BOSS -> score += 500;
+                            }
+
+                            enemies.remove(k);
+                        }
+
+
+                        if (levelManager.getCurrentLevel() == 8) {
+                            SoundManager.winSound();
+                            JOptionPane.showMessageDialog(this, "🎉 You Win!");
+
+                            gameTimer.stop();
+
+                            if (main.getCurrentUser() != null) {
+
+                                DatabaseManager.saveGameRecord(
+                                        main.getCurrentUser().getUsername(),
+                                        score,
+                                        levelManager.getCurrentLevel()
+                                );
+
+                            }
+
+                            main.showPanel("MainMenu");
+                            return;
+                        }
+
+                        levelManager.nextLevel();
+
+                        JOptionPane.showMessageDialog(
+                                this,
+                                "Level " + levelManager.getCurrentLevel()
+                        );
+
+                        loadLevel();
+
+                        return;
+
+
                 }
 
                 powerUps.remove(i);
             }
         }
 
-
-        //
         for (int i = explosions.size() - 1; i >= 0; i--) {
 
             Explosion ex = explosions.get(i);
@@ -306,20 +381,34 @@ public class GamePanel extends JPanel implements ActionListener {
 
             }
         }
-        //
+
     }
 
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
-        g2d.drawImage(ImageLoader.background, 0, 0, getWidth(), getHeight(), null);
+        if (levelManager.getCurrentLevel() == 4 ||
+                levelManager.getCurrentLevel() == 8) {
 
-        for (Enemy enemy : enemies) {
+            g2d.drawImage(ImageLoader.background2,
+                    0, 0,
+                    getWidth(), getHeight(),
+                    null);
+
+        } else {
+
+            g2d.drawImage(ImageLoader.background, 0, 0, getWidth(), getHeight(), null);
+        }
+
+        for (ChickenInvaders.Enemy enemy : enemies) {
 
             enemy.draw(g2d);
 
         }
+
+
+
         for (Egg egg : eggs) {
 
             egg.draw(g2d);
@@ -395,6 +484,23 @@ public class GamePanel extends JPanel implements ActionListener {
 
         enemies.clear();
         bullets.clear();
+        eggs.clear();
+        powerUps.clear();
+        explosions.clear();
+
+        if (levelManager.getCurrentLevel() == 4 ||
+                levelManager.getCurrentLevel() == 8) {
+
+            enemies.add(
+                    EnemyFactory.createEnemy(
+                            levelManager.getCurrentLevel(),
+                            310,
+                            50
+                    )
+            );
+
+            return;
+        }
 
         for (int r = 0; r < 5; r++) {
 
@@ -410,15 +516,14 @@ public class GamePanel extends JPanel implements ActionListener {
                                 y
                         )
                 );
-
             }
-
         }
-
     }
     private void gameOver() {
 
         gameTimer.stop();
+
+        SoundManager.gameOverSound();
 
         JOptionPane.showMessageDialog(this, "Game Over!");
 

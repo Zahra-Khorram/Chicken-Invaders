@@ -23,6 +23,9 @@ public class EnemyFactory {
                         ? new NormalEnemy(x, y, 3)
                         : new ZigzagEnemy(x, y, 3);
 
+            case 4:
+                return new BossEnemy(x, y, false);
+
             case 5:
                 return random.nextBoolean()
                         ? new ShooterEnemy(x, y, 3)
@@ -46,11 +49,12 @@ public class EnemyFactory {
 
                 };
 
+            case 8:
+                return new BossEnemy(x, y, true);
+
             default:
                 return new NormalEnemy(x, y, 2);
 
         }
-
     }
-
 }

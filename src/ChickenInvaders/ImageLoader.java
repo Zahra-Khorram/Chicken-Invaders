@@ -10,7 +10,7 @@ public class ImageLoader {
     public static BufferedImage background;
     public static BufferedImage background2;
 
-    // airplane (تغییر نام اعداد به متن برای رفع ارور جاوا)
+    // airplane
     public static BufferedImage plane1;
     public static BufferedImage plane2;
     public static BufferedImage plane3;
@@ -50,20 +50,20 @@ public class ImageLoader {
 
     public static void loadAllImages() {
 
-        background  = loadImage("/images/background/background.png");
-        background2 = loadImage("/images/background/background2.png");
+        background  = loadImage("/images/background/background.jpg");
+        background2 = loadImage("/images/background/background2.jpg");
 
 
-        plane1           = loadImage("/images/airplane/1.png");
-        plane2           = loadImage("/images/airplane/2.png");
-        plane3           = loadImage("/images/airplane/3.png");
-        plane4           = loadImage("/images/airplane/4.png");
-        plane5           = loadImage("/images/airplane/5.png");
-        plane6           = loadImage("/images/airplane/6.png");
-        plane7           = loadImage("/images/airplane/7.png");
-        planeExplosion   = loadImage("/images/airplane/Explosion.png");
-        chickenExplosion = loadImage("/images/airplane/Explosion2.png");
-        shot             = loadImage("/images/airplane/shot.png");
+        plane1           = loadImage("/images/airplan/1.png");
+        plane2           = loadImage("/images/airplan/2.png");
+        plane3           = loadImage("/images/airplan/3.png");
+        plane4           = loadImage("/images/airplan/4.png");
+        plane5           = loadImage("/images/airplan/5.png");
+        plane6           = loadImage("/images/airplan/6.png");
+        plane7           = loadImage("/images/airplan/7.png");
+        planeExplosion   = loadImage("/images/airplan/Explosion.png");
+        chickenExplosion = loadImage("/images/airplan/Explosion2.png");
+        shot             = loadImage("/images/airplan/shot.png");
 
         //chicken
         normal_chicken        = loadImage("/images/chicken/normal_chicken.png");

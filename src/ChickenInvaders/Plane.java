@@ -14,14 +14,24 @@ public class Plane {
     private int firePower = 1;
 
     private long lastShotTime = 0;
-    private final long shotDelay = 300;
+    private long shotDelay = 300;
+    private long fastShotEndTime = 0;
 
+    private boolean shield = false;
+    private long shieldEndTime = 0;
     public Plane(int x, int y) {
         this.x = x;
         this.y = y;
     }
 
     public void move(boolean left, boolean right, boolean up, boolean down) {
+
+        if (shield && System.currentTimeMillis() > shieldEndTime) {
+            shield = false;
+        }
+        if (System.currentTimeMillis() > fastShotEndTime) {
+            shotDelay = 300;
+        }
         if (left && x > 0) x -= speed;
         if (right && x < 800 - width) x += speed;
         if (up && y > 40) y -= speed;
@@ -57,6 +67,14 @@ public class Plane {
             g2d.setColor(Color.CYAN);
             g2d.fillRect(x, y, width, height);
         }
+        if (shield) {
+            g2d.setColor(Color.CYAN);
+            g2d.drawOval(x - 5, y - 5, width + 10, height + 10);
+        }
+    }
+    public void activateShield() {
+        shield = true;
+        shieldEndTime = System.currentTimeMillis() + 5000;
     }
 
     public void addLife() { if (lives < maxLives) lives++; }
@@ -69,4 +87,15 @@ public class Plane {
     public void incrementFirePower() { firePower++; }
     public int getFirePower() { return firePower; }
     public Rectangle getBounds() { return new Rectangle(x, y, width, height); }
+
+    public boolean hasShield() {
+        return shield;
+    }
+    public void activateFastShot() {
+
+        shotDelay = 100;
+
+        fastShotEndTime = System.currentTimeMillis() + 5000;
+
+    }
 }
