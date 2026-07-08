@@ -12,29 +12,26 @@ public class ShooterEnemy extends Enemy {
 
     @Override
     public void update() {
-
+        if (isFlyingToTarget) {
+            flyToTarget();
+        }
     }
 
     public boolean canShoot() {
-
+        if (isFlyingToTarget) {
+            return false;
+        }
         long now = System.currentTimeMillis();
-
         if (now - lastShot > 2000) {
-
             lastShot = now;
             return true;
-
         }
-
         return false;
-
     }
 
     @Override
     public void draw(Graphics2D g) {
-
         if (ImageLoader.shooter_chicken != null) {
-
             g.drawImage(
                     ImageLoader.shooter_chicken,
                     x,
@@ -43,13 +40,9 @@ public class ShooterEnemy extends Enemy {
                     height,
                     null
             );
-
         } else {
-
             g.setColor(Color.RED);
             g.fillOval(x, y, width, height);
-
         }
-
     }
 }

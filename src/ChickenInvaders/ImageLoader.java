@@ -10,7 +10,7 @@ public class ImageLoader {
     public static BufferedImage background;
     public static BufferedImage background2;
 
-    // airplane (تغییر نام اعداد به متن برای رفع ارور جاوا)
+    // airplane
     public static BufferedImage plane1;
     public static BufferedImage plane2;
     public static BufferedImage plane3;
@@ -24,7 +24,7 @@ public class ImageLoader {
 
     // chicken
     public static BufferedImage normal_chicken;
-    public static BufferedImage double_normal_chicken; // تغییر نام متغیر عددی
+    public static BufferedImage double_normal_chicken;
     public static BufferedImage fast_chicken;
     public static BufferedImage zigzag_chicken;
     public static BufferedImage shooter_chicken;
@@ -50,24 +50,24 @@ public class ImageLoader {
 
     public static void loadAllImages() {
 
-        background  = loadImage("/images/background/background.png");
-        background2 = loadImage("/images/background/background2.png");
+        background  = loadImage("/images/background/background.jpg");
+        background2 = loadImage("/images/background/background2.jpg");
 
 
-        plane1           = loadImage("/images/airplane/1.png");
-        plane2           = loadImage("/images/airplane/2.png");
-        plane3           = loadImage("/images/airplane/3.png");
-        plane4           = loadImage("/images/airplane/4.png");
-        plane5           = loadImage("/images/airplane/5.png");
-        plane6           = loadImage("/images/airplane/6.png");
-        plane7           = loadImage("/images/airplane/7.png");
-        planeExplosion   = loadImage("/images/airplane/Explosion.png");
-        chickenExplosion = loadImage("/images/airplane/Explosion2.png");
-        shot             = loadImage("/images/airplane/shot.png");
+        plane1           = loadImage("/images/airplan/1.png");
+        plane2           = loadImage("/images/airplan/2.png");
+        plane3           = loadImage("/images/airplan/3.png");
+        plane4           = loadImage("/images/airplan/4.png");
+        plane5           = loadImage("/images/airplan/5.png");
+        plane6           = loadImage("/images/airplan/6.png");
+        plane7           = loadImage("/images/airplan/7.png");
+        planeExplosion   = loadImage("/images/airplan/Explosion.png");
+        chickenExplosion = loadImage("/images/airplan/Explosion2.png");
+        shot             = loadImage("/images/airplan/shot.png");
 
         //chicken
         normal_chicken        = loadImage("/images/chicken/normal_chicken.png");
-        double_normal_chicken = loadImage("/images/chicken/2xnormal_chicken.png");
+        double_normal_chicken = loadImage("/images/chicken/2xnoramal_chicken.png");
         fast_chicken          = loadImage("/images/chicken/fast_chicken.png");
         zigzag_chicken        = loadImage("/images/chicken/zigzag_chicken.png");
         shooter_chicken       = loadImage("/images/chicken/shooter_chicken.png");
@@ -81,15 +81,15 @@ public class ImageLoader {
         p1_fast_shot = loadImage("/images/powerup1/fast_shot.png");
         p1_freeze    = loadImage("/images/powerup1/freeze.png");
         p1_heal      = loadImage("/images/powerup1/heal.png");
-        p1_shield    = loadImage("/images/powerup1/shield.png");
+        p1_shield    = loadImage("/images/powerup1/sheild.png");
 
         //powerup2
         p2_add_shot  = loadImage("/images/powerup2/add_shot.png");
-        p2_bomb_shot = loadImage("/images/powerup2/bomb_shot.png");
+        p2_bomb_shot = loadImage("/images/powerup2/bomb.png");
         p2_fast_shot = loadImage("/images/powerup2/fast_shot.png");
         p2_freeze    = loadImage("/images/powerup2/freeze.png");
         p2_heal      = loadImage("/images/powerup2/heal.png");
-        p2_shield    = loadImage("/images/powerup2/shield.png");
+        p2_shield    = loadImage("/images/powerup2/sheild.png");
     }
 
     private static BufferedImage loadImage(String path) {

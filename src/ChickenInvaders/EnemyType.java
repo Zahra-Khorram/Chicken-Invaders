@@ -4,5 +4,6 @@ public enum EnemyType {
     NORMAL,
     FAST,
     ZIGZAG,
-    SHOOTER
+    SHOOTER,
+    BOSS
 }

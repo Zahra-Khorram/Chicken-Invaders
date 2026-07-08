@@ -10,14 +10,14 @@ public class FastEnemy extends Enemy {
 
     @Override
     public void update() {
-        // حرکت توسط شبکه کنترل می‌شود
+        if (isFlyingToTarget) {
+            flyToTarget();
+        }
     }
 
     @Override
     public void draw(Graphics2D g) {
-
         if (ImageLoader.fast_chicken != null) {
-
             g.drawImage(
                     ImageLoader.fast_chicken,
                     x,
@@ -26,13 +26,9 @@ public class FastEnemy extends Enemy {
                     height,
                     null
             );
-
         } else {
-
             g.setColor(Color.ORANGE);
             g.fillOval(x, y, width, height);
-
         }
-
     }
 }

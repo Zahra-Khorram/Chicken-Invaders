@@ -12,17 +12,17 @@ public class ZigzagEnemy extends Enemy {
 
     @Override
     public void update() {
-
-        angle += 0.15;
-        y += (int)(Math.sin(angle) * 2);
-
+        if (isFlyingToTarget) {
+            flyToTarget();
+        } else {
+            angle += 0.15;
+            y += (int)(Math.sin(angle) * 2);
+        }
     }
 
     @Override
     public void draw(Graphics2D g) {
-
         if (ImageLoader.zigzag_chicken != null) {
-
             g.drawImage(
                     ImageLoader.zigzag_chicken,
                     x,
@@ -31,13 +31,9 @@ public class ZigzagEnemy extends Enemy {
                     height,
                     null
             );
-
         } else {
-
             g.setColor(Color.GREEN);
             g.fillOval(x, y, width, height);
-
         }
-
     }
 }

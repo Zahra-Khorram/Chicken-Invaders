@@ -26,14 +26,25 @@ public class Explosion {
 
     public void draw(Graphics2D g) {
 
-        g.setColor(new Color(255,150,0, life * 12));
+        int size = radius * 2;
 
-        g.fillOval(
-                x - radius / 2,
-                y - radius / 2,
-                radius,
-                radius
-        );
+        if (ImageLoader.chickenExplosion != null) {
+
+            g.drawImage(
+                    ImageLoader.chickenExplosion,
+                    x,
+                    y,
+                    size,
+                    size,
+                    null
+            );
+
+        } else {
+
+            g.setColor(Color.ORANGE);
+            g.fillOval(x, y, size, size);
+
+        }
 
     }
 

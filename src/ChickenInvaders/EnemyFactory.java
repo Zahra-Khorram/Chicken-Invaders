@@ -23,6 +23,10 @@ public class EnemyFactory {
                         ? new NormalEnemy(x, y, 3)
                         : new ZigzagEnemy(x, y, 3);
 
+            case 4:
+                // غول مرحله ۴: جان ۱۰۰، سرعت ۱.۵، مرحله ۴ (۴ جهته)
+                return new BossEnemy(x, y, 100, 1.5, 4);
+
             case 5:
                 return random.nextBoolean()
                         ? new ShooterEnemy(x, y, 3)
@@ -46,11 +50,34 @@ public class EnemyFactory {
 
                 };
 
+            case 8:
+                // غول مرحله ۸: جان ۳۰۰، سرعت ۲.۰، مرحله ۸ (۸ جهته)
+                return new BossEnemy(x, y, 300, 2.0, 8);
+
             default:
                 return new NormalEnemy(x, y, 2);
 
         }
-
     }
 
+    public static Enemy createEnemyByType(EnemyType type, int x, int y, int level) {
+
+        switch (type) {
+
+            case NORMAL:
+                return new NormalEnemy(x, y, level >= 5 ? 4 : 2);
+
+            case FAST:
+                return new FastEnemy(x, y, level >= 5 ? 4 : 2);
+
+            case ZIGZAG:
+                return new ZigzagEnemy(x, y, level >= 5 ? 4 : 2);
+
+            case SHOOTER:
+                return new ShooterEnemy(x, y, level >= 5 ? 4 : 2);
+
+            default:
+                return new NormalEnemy(x, y, 2);
+        }
+    }
 }

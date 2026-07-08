@@ -13,8 +13,17 @@
       <sourceFolder url="file://$MODULE_DIR$/src/resources/images/powerup2" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/resources/sounds" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/resources/sounds/sound-effects" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src/ChickenInvaders" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src/ChickenInvaders/resources" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src/ChickenInvaders/resources/images" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src/ChickenInvaders/resources/images/airplan" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src/ChickenInvaders/resources/images/background" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src/ChickenInvaders/resources/images/chicken" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src/ChickenInvaders/resources/images/powerup1" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src/ChickenInvaders/resources/images/powerup2" isTestSource="false" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="sqlite-jdbc-3.53.2.0" level="project" />
   </component>
 </module>

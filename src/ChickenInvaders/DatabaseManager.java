@@ -143,21 +143,60 @@ public class DatabaseManager {
 
 
     public static void saveGameRecord(String username, int score, int level) {
-        String timestamp = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new java.util.Date());
+
+        String timestamp = new java.text.SimpleDateFormat(
+                "yyyy-MM-dd HH:mm:ss"
+        ).format(new java.util.Date());
+
+
         if (useFallback) {
-            try (PrintWriter out = new PrintWriter(new FileWriter("game_history.txt", true))) {
+
+            try (PrintWriter out = new PrintWriter(
+                    new FileWriter("/Users/anahita/IdeaProjects/ChIGame.java/game_history.txt", true))) {
+
                 out.println(username + "," + score + "," + level + "," + timestamp);
+
             } catch (IOException ignored) {}
+
         } else {
-            String sql = "INSERT INTO games(username, score, level, timestamp) VALUES(?,?,?,?)";
-            try (Connection conn = DriverManager.getConnection(DB_URL);
-                 PreparedStatement pstmt = conn.prepareStatement(sql)) {
-                pstmt.setString(1, username);
-                pstmt.setInt(2, score);
-                pstmt.setInt(3, level);
-                pstmt.setString(4, timestamp);
-                pstmt.executeUpdate();
-            } catch (SQLException ignored) {}
+
+            try (Connection conn = DriverManager.getConnection(DB_URL)) {
+
+                // ذخیره تاریخچه بازی
+                String sql =
+                        "INSERT INTO games(username, score, level, timestamp) VALUES(?,?,?,?)";
+
+                try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+                    pstmt.setString(1, username);
+                    pstmt.setInt(2, score);
+                    pstmt.setInt(3, level);
+                    pstmt.setString(4, timestamp);
+
+                    pstmt.executeUpdate();
+                }
+
+
+                // بروزرسانی رکورد بالاتر کاربر
+                String update =
+                        "UPDATE users SET high_score = ? " +
+                                "WHERE username = ? AND high_score < ?";
+
+                try (PreparedStatement pstmt = conn.prepareStatement(update)) {
+
+                    pstmt.setInt(1, score);
+                    pstmt.setString(2, username);
+                    pstmt.setInt(3, score);
+
+                    pstmt.executeUpdate();
+                }
+
+
+            } catch (SQLException e) {
+
+                e.printStackTrace();
+
+            }
         }
     }
 
@@ -165,14 +204,42 @@ public class DatabaseManager {
     public static List<String[]> getHighScores() {
         List<String[]> list = new ArrayList<>();
         if (useFallback) {
-            List<User> users = loadUsersFallback();
-            users.sort((a, b) -> Integer.compare(b.getHighScore(), a.getHighScore()));
-            for (User u : users) {
-                if (u.getHighScore() > 0) {
-                    list.add(new String[]{u.getUsername(), String.valueOf(u.getHighScore()), "N/A", "N/A"});
+
+            try (BufferedReader br = new BufferedReader(
+                    new FileReader("/Users/anahita/IdeaProjects/ChIGame.java/game_history.txt"))) {
+
+                String line;
+
+                ArrayList<String[]> temp = new ArrayList<>();
+
+                while ((line = br.readLine()) != null) {
+
+                    String[] data = line.split(",");
+
+                    if (data.length >= 4) {
+                        temp.add(new String[]{
+                                data[0], // username
+                                data[1], // score
+                                data[2], // level
+                                data[3]  // timestamp
+                        });
+                    }
                 }
+
+                temp.sort((a,b) ->
+                        Integer.compare(
+                                Integer.parseInt(b[1]),
+                                Integer.parseInt(a[1])
+                        )
+                );
+
+                list.addAll(temp.subList(0, Math.min(10, temp.size())));
+
+            } catch(IOException e){
+                e.printStackTrace();
             }
-        } else {
+        }
+        else {
             // استخراج کاربران بر اساس بالاترین امتیاز کسب شده به ترتیب نزولی
             String sql = "SELECT username, high_score, current_plane FROM users WHERE high_score > 0 ORDER BY high_score DESC LIMIT 10";
             try (Connection conn = DriverManager.getConnection(DB_URL);

@@ -10,15 +10,14 @@ public class NormalEnemy extends Enemy {
 
     @Override
     public void update() {
-        // فعلاً حرکتی ندارد.
-        // بعداً حرکت شبکه از GamePanel کنترل می‌شود.
+        if (isFlyingToTarget) {
+            flyToTarget();
+        }
     }
 
     @Override
     public void draw(Graphics2D g) {
-
         if (ImageLoader.normal_chicken != null) {
-
             g.drawImage(
                     ImageLoader.normal_chicken,
                     x,
@@ -27,14 +26,9 @@ public class NormalEnemy extends Enemy {
                     height,
                     null
             );
-
         } else {
-
             g.setColor(Color.YELLOW);
             g.fillOval(x, y, width, height);
-
         }
-
     }
-
 }

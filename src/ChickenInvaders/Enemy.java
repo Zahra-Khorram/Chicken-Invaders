@@ -13,6 +13,11 @@ public abstract class Enemy {
     protected int health;
     protected EnemyType type;
 
+    protected int targetX;
+    protected int targetY;
+    protected boolean isFlyingToTarget = false;
+    protected double flySpeed = 3.0;
+
     public Enemy(int x, int y, int health, EnemyType type) {
         this.x = x;
         this.y = y;
@@ -55,5 +60,34 @@ public abstract class Enemy {
 
     public int getY() {
         return y;
+    }
+
+    public void setTarget(int targetX, int targetY) {
+        this.targetX = targetX;
+        this.targetY = targetY;
+        if (this.x != targetX || this.y != targetY) {
+            this.isFlyingToTarget = true;
+        }
+    }
+
+    protected void flyToTarget() {
+        if (!isFlyingToTarget) return;
+
+        double dx = targetX - x;
+        double dy = targetY - y;
+        double distance = Math.hypot(dx, dy);
+
+        if (distance < flySpeed) {
+            x = targetX;
+            y = targetY;
+            isFlyingToTarget = false;
+        } else {
+            x += (int) ((dx / distance) * flySpeed);
+            y += (int) ((dy / distance) * flySpeed);
+        }
+    }
+
+    public boolean isFlyingToTarget() {
+        return isFlyingToTarget;
     }
 }

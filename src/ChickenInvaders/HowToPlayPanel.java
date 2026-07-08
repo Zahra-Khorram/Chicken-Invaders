@@ -13,7 +13,7 @@ public class HowToPlayPanel extends JPanel {
         setBackground(Color.BLACK);
 
         GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(8, 10, 8, 10); // فاصله بین خطوط
+        gbc.insets = new Insets(8, 10, 8, 10);
         gbc.gridx = 0;
         gbc.fill = GridBagConstraints.HORIZONTAL;
 
@@ -21,7 +21,7 @@ public class HowToPlayPanel extends JPanel {
         title.setFont(new Font("Arial", Font.BOLD, 32));
         title.setForeground(Color.CYAN);
         gbc.gridy = 0;
-        gbc.insets = new Insets(10, 10, 25, 10); // فاصله بیشتر زیر عنوان
+        gbc.insets = new Insets(10, 10, 25, 10);
         add(title, gbc);
 
         gbc.insets = new Insets(6, 10, 6, 10);
@@ -74,8 +74,8 @@ public class HowToPlayPanel extends JPanel {
         JButton backBtn = new JButton("Back to Menu");
         backBtn.setFont(new Font("Arial", Font.BOLD, 16));
         gbc.gridy = 9;
-        gbc.insets = new Insets(30, 10, 10, 10); // ایجاد فاصله خالی بالای دکمه
-        gbc.fill = GridBagConstraints.NONE; // دکمه به اندازه متن خودش باشد، نه کل عرض صفحه
+        gbc.insets = new Insets(30, 10, 10, 10);
+        gbc.fill = GridBagConstraints.NONE;
         add(backBtn, gbc);
 
 

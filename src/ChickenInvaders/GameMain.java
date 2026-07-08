@@ -46,7 +46,6 @@ public class GameMain extends JFrame {
         cardLayout.show(mainPanel, name);
     }
 
-    //update
     public void startGame() {
         if (currentUser == null) {
             showPanel("LoginPanel");
@@ -73,7 +72,9 @@ public class GameMain extends JFrame {
     public User getCurrentUser() { return currentUser; }
     public void setCurrentUser(User user) { this.currentUser = user; }
 
+
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> new GameMain().setVisible(true));
     }
+
 }
