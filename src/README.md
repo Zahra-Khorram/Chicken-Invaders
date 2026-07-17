@@ -3,7 +3,7 @@
 شماره دانشجویی :۴۰۲۱۱۰۱۲
 
 ## Repository
-https://github.com/username/ChickenInvaders
+https://github.com/Zahra-Khorram/Chicken-Invaders.git
 
 نکات اجرا :
 
